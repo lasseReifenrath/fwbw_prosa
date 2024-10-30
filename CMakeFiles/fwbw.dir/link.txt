@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/fwbw.dir/main.cpp.o -o fwbw  libMyLib.a -lc++abi -lc++ 

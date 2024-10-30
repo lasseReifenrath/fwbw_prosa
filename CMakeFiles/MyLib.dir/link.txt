@@ -1,0 +1,2 @@
+/usr/bin/ar qc libMyLib.a CMakeFiles/MyLib.dir/BaseMatrix.cpp.o CMakeFiles/MyLib.dir/SubstitutionMatrix.cpp.o CMakeFiles/MyLib.dir/FwBwAligner.cpp.o cacode/CMakeFiles/cacode.dir/lambda_calculator.cpp.o cacode/CMakeFiles/cacode.dir/lubksb.cpp.o cacode/CMakeFiles/cacode.dir/ludcmp.cpp.o cacode/CMakeFiles/cacode.dir/nrutil.cpp.o
+/usr/bin/ranlib libMyLib.a
