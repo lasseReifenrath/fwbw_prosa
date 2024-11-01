@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <sstream>
 #include <vector>
+#include <chrono>
 #include "SubstitutionMatrix.h"
 #include "FwBwAligner.h"
 
@@ -73,8 +74,7 @@ int main() {
 
     string query = "d1ufaa2"; //d1ufaa2
     string target = "d2c1ia1"; //d2c1ia1
-    // string query = "d1ufaa2";
-    // string target = "d2c1ia1";
+
 
     string aa1 = sid2seq_aa[query];
     string aa2 = sid2seq_aa[target];
@@ -87,12 +87,22 @@ int main() {
 
     SubstitutionMatrix subMat3Di("./data/mat3di.out", 2.1, 0.0);
     SubstitutionMatrix subMat("./data/blosum62.out", 1.4, 0.0);
+    size_t length = 16;
+    size_t blocks = (cols / length) + (cols % length != 0);
 
-    FwBwAligner aligner(rows, cols, subMat3Di, subMat);
-    FwBwAligner::s_align result = aligner.align(ss1, aa1, ss2, aa2);
+  
+
+
+
+    auto start = std::chrono::high_resolution_clock::now();
+    FwBwAligner aligner(rows, cols, length, blocks, subMat3Di, subMat);
+    FwBwAligner::s_align result = aligner.align(ss1, aa1, ss2, aa2, length, blocks);
+    auto end = std::chrono::high_resolution_clock::now();
+
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "Time taken for alignment: " << duration.count() << " milliseconds" << std::endl;
 
     std::string fasta = format_alignment(result, aa1, aa2, query, target);
-    std::cout << fasta;
 
     return 0;
 }

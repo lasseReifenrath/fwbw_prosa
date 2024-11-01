@@ -17,8 +17,8 @@
 class FwBwAligner {
 public:
     typedef struct {
-        uint32_t score1;
-        uint32_t score2;
+        float score1;
+        float score2;
         int32_t dbStartPos1;
         int32_t dbEndPos1;
         int32_t	qStartPos1;
@@ -33,12 +33,14 @@ public:
         int word;
     } s_align;
 
-    FwBwAligner(unsigned int maxQueryLen, unsigned int maxTargetLen,
+    FwBwAligner(size_t maxQueryLen, size_t maxTargetLen, size_t length, size_t blocks,
                 SubstitutionMatrix & subMat3Di, SubstitutionMatrix & subMat);
     ~FwBwAligner();
 
+
     s_align align(std::string & query3Di, std::string & queryAA,
-                  std::string & target3Di, std::string & targetAA);
+                  std::string & target3Di, std::string & targetAA,
+                  size_t length, size_t blocks);
 
     void computeForwardScoreMatrix(const unsigned char* ss1_num, const unsigned char* ss2_num,
                                    const unsigned char* aa1_num, const unsigned char* aa2_num,
@@ -96,6 +98,7 @@ private:
     float** scoreForward;
     float** scoreBackward;
     float** P;
+    uint8_t* btMatrix;
 
     float** zmaxBlocksMaxForward;
     float** zmaxBlocksMaxBackward;
@@ -104,6 +107,9 @@ private:
     float* zmaxBackward;
     float *vj;
     float *wj;
+    float* zeBlock;
+    float* zfBlock;
+    float** zmBlock;
     float** mat3di;
     float** blosum;
     const SubstitutionMatrix & subMat3Di;
@@ -111,11 +117,11 @@ private:
 
     void forwardBackwardSaveBlockMaxLocal(float** S, float** z_init, float* vj, float* wj,
                                           float T, float go, float ge,
-                                          size_t rows, size_t start, size_t end,
+                                          size_t rows, size_t start, size_t end, size_t memcpy_cols,
             // output is zm, ze, ze, zmax
-                                          float** zm, float** ze, float** zf, float* zmax);
+                                          float** zm, float* zmax, float** zmBlock, float* zeBlock, float* zfBlock);
 
-    void rescaleBlocks(float **matrix, float **scale, size_t rows, size_t cols, int length, int blocks);
+    void rescaleBlocks(float **matrix, float **scale, size_t rows, size_t length, size_t blocks, size_t targetLen);
 
 };
 
