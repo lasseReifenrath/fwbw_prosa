@@ -360,7 +360,7 @@ int main() {
     double* P =  new double[rows *cols];
 
     // Load the values into scoreForward and scoreBackward matrices
-    std::ifstream forwardFile("/home/lasse/Desktop/Projects/FB_martin/S.txt");
+    std::ifstream forwardFile("./S.txt");
     //std::ifstream backwardFile("/home/lasse/Desktop/Projects/FB_martin/scoreBackward.txt");
 
     if (forwardFile.is_open()) {
